@@ -11,9 +11,9 @@ defmodule Problems.NumberSequence do
     Example: 
 
     Input: 1234
-    Output: 2
+    Output: 3
 
-    The number can be represented by 'abcd' or 'lcd'
+    The number can be represented by 'abcd','lcd' or 'awd'
   """
 
   def number_of_sequences(input) do
@@ -29,30 +29,26 @@ defmodule Problems.NumberSequence do
 
   end
 
-  def get_pairs_combinations(numbers,combinations_number,adjacent_ocurrencies) do
-    case numbers do
-      [] -> combinations_number
+  def get_pairs_combinations([],combinations_number,_), do: combinations_number
+
+  def get_pairs_combinations([head|tail],combinations_number,adjacent_ocurrencies) do
+    case tail do
+      [] ->
+        get_pairs_combinations(tail,combinations_number,adjacent_ocurrencies)
       _ ->
-        [head|tail] = numbers
+        pair = (head*10)+List.first(tail)
 
-        case tail do
-          [] ->
-            get_pairs_combinations(tail,combinations_number,adjacent_ocurrencies)
-          _ ->
-            pair = (head*10)+List.first(tail)
+        {ocurrences,combinations_number} =
+          case is_valid_number(pair) do
+            true ->
+              ocurrences = 1+combinations_number-adjacent_ocurrencies
+              {ocurrences, ocurrences+combinations_number}
+            false ->
+              {0,combinations_number}
+          end
 
-            {ocurrences,combinations_number} =
-              case is_valid_number(pair) do
-                true ->
-                  ocurrences = 1+combinations_number-adjacent_ocurrencies
-                  {ocurrences, ocurrences+combinations_number}
-                false ->
-                  {0,combinations_number}
-              end
-
-            get_pairs_combinations(tail,combinations_number,ocurrences)
-        end 
-    end
+        get_pairs_combinations(tail,combinations_number,ocurrences)
+    end 
   end
 
   defp are_all_numbers_valid?(numbers) do
