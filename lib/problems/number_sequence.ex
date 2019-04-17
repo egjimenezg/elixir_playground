@@ -29,25 +29,25 @@ defmodule Problems.NumberSequence do
 
   end
 
-  def get_pairs_combinations([],combinations_number,_), do: combinations_number
+  defp get_pairs_combinations([],combinations_number,_), do: combinations_number
 
-  def get_pairs_combinations([head|tail],combinations_number,adjacent_ocurrencies) do
+  defp get_pairs_combinations([head|tail],combinations_number,adjacent_occurrences) do
     case tail do
       [] ->
-        get_pairs_combinations(tail,combinations_number,adjacent_ocurrencies)
+        get_pairs_combinations(tail,combinations_number,adjacent_occurrences)
       _ ->
         pair = (head*10)+List.first(tail)
 
-        {ocurrences,combinations_number} =
+        {occurrences,combinations_number} =
           case is_valid_number(pair) do
             true ->
-              ocurrences = 1+combinations_number-adjacent_ocurrencies
-              {ocurrences, ocurrences+combinations_number}
+              occurrences= 1+combinations_number-adjacent_occurrences
+              {occurrences, occurrences+combinations_number}
             false ->
               {0,combinations_number}
           end
 
-        get_pairs_combinations(tail,combinations_number,ocurrences)
+        get_pairs_combinations(tail,combinations_number,occurrences)
     end 
   end
 
