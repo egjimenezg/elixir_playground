@@ -16,4 +16,16 @@ defmodule Server.ProcessRegistryTest do
     assert is_nil(Server.ProcessRegistry.where_is(:second_process)) == true
   end
 
+  test "remove process related information when it crash" do
+    Server.ProcessRegistry.start_link
+    Server.ProcessRegistry.register(:process_a)
+
+    pid = Server.ProcessRegistry.where_is(:process_a)
+
+    Process.exit(pid, :kill)
+
+    assert Process.alive?(pid) == false
+    assert is_nil(Server.ProcessRegistry.where_is(:process_a))
+  end
+
 end
