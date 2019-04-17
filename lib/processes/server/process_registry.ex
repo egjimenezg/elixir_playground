@@ -39,4 +39,13 @@ defmodule Server.ProcessRegistry do
     {:reply, Map.get(registry, name), registry}    
   end
 
+  def handle_info({:EXIT, pid, reason}, registry) do
+    {key,pid} = registry
+                |> Enum.find(fn {key, value} ->
+                  value == pid
+                end)
+
+    {:noreply, Map.delete(registry,key)}
+  end
+
 end
