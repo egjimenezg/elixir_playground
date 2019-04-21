@@ -14,20 +14,21 @@ defmodule Ets.ProcessRegistry do
   end
 
   def register(name) do
-    case :ets.lookup(__MODULE__, name) do
-      [{^name, _}] ->
-        :error
-      [] ->
-        new_pid = spawn(fn ->
-                    Process.link(Process.whereis(__MODULE__))
-                    receive do
-                      message -> IO.inspect(message)
-                    end 
-                  end)
 
-        :ets.insert(__MODULE__, {name, new_pid})
+    new_pid = spawn(fn ->
+                Process.link(Process.whereis(__MODULE__))
+                receive do
+                  message -> IO.inspect(message)
+                end 
+              end)
+
+    case :ets.insert_new(__MODULE__, {name, new_pid}) do
+      true ->
         :ok
+      false ->
+        :error 
     end
+
   end
 
   def where_is(name) do
