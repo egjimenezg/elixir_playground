@@ -20,7 +20,6 @@ defmodule Server.ProcessRegistry do
   end
 
   def handle_call({:register, name}, _, registry) do
-
     case Map.fetch(registry, name) do
       {:ok, _} ->
         {:reply, :error, registry}
