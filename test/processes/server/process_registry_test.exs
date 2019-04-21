@@ -8,8 +8,6 @@ defmodule Server.ProcessRegistryTest do
   end
 
   test "register a new process by name only once" do
-    self()
-    |> IO.inspect
     assert :ok == Server.ProcessRegistry.register(:some_name)
     assert :error == Server.ProcessRegistry.register(:some_name)
   end
