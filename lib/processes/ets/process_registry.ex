@@ -14,7 +14,6 @@ defmodule Ets.ProcessRegistry do
   end
 
   def register(name) do
-
     new_pid = spawn(fn ->
                 Process.link(Process.whereis(__MODULE__))
                 receive do
@@ -26,6 +25,7 @@ defmodule Ets.ProcessRegistry do
       true ->
         :ok
       false ->
+        Process.exit(new_pid, :kill)
         :error 
     end
 
