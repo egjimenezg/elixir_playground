@@ -1,5 +1,4 @@
 defmodule Worker.Supervisor.OneForOneTest do
-
   use ExUnit.Case
 
   setup do
@@ -15,6 +14,8 @@ defmodule Worker.Supervisor.OneForOneTest do
 
     receive do
       {:DOWN, _, :process, worker_pid, :killed} -> IO.puts("#{inspect worker_pid} is DOWN")
+    after
+      1000 -> :ok
     end
 
     new_pid = Process.whereis(Worker.Supervised)
