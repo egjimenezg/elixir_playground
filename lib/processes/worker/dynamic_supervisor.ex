@@ -2,8 +2,8 @@ defmodule Worker.DynamicSupervisor do
 
   use DynamicSupervisor
 
-  def start_link(_args) do
-    DynamicSupervisor.start_link(__MODULE__, _args, name: __MODULE__)
+  def start_link(args) do
+    DynamicSupervisor.start_link(__MODULE__, args, name: __MODULE__)
   end
 
   @impl true
